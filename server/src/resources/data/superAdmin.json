@@ -1,0 +1,11 @@
+{
+  "firstName": "Zues",
+  "lastName": "Admin",
+  "email": "zues@gmail.com",
+  "phone": "+2348031957690",
+  "password": "",
+  "confirm_password": "",
+  "gender": "male",
+  "slug": "SUPER_ADMIN_ROLE",
+  "active": true
+}

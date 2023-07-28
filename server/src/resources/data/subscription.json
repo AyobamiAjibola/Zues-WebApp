@@ -1,0 +1,30 @@
+[
+    {
+        "name": "trial",
+        "slug": "TRIAL",
+        "price": null,
+        "duration": 5,
+        "durationUnit": "days"
+    },
+    {
+        "name": "standard",
+        "slug": "STANDARD",
+        "price": 5000,
+        "duration": 3,
+        "durationUnit": "months"
+    },
+    {
+        "name": "premium",
+        "slug": "PREMIUM",
+        "price": 10000,
+        "duration": 12,
+        "durationUnit": "months"
+    },
+    {
+        "name": "basic",
+        "slug": "BASIC",
+        "price": null,
+        "duration": null,
+        "durationUnit": null
+    }
+]
