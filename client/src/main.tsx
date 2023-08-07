@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import Dexie from 'dexie';
 import store from './store';
 import AppLoader from './components/loader/AppLoader';
-
 import './index.css';
 import getIndexDB from './db';
 import App from './App';

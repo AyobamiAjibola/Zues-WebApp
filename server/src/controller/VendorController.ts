@@ -517,7 +517,7 @@ export default class CustomerController {
 
                 let _email = ''
                 if(!vendor.googleId || !vendor.facebookId || !vendor.instagramId) {
-                    _email = value.email
+                    _email = value.email as string
                 };
 
                 let _phone = ''

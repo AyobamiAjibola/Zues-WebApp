@@ -170,7 +170,8 @@ declare global {
       user: User;
       form: IncomingForm;
       jwt: string;
-      subscription: any
+      subscription: any;
+      jwtToken: string;
     }
   }
 }

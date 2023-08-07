@@ -27,6 +27,9 @@ import { clearChangePasswordStatus } from "../../store/reducers/authenticationRe
 import { SCREEN_WIDTH } from "../../config/constants";
 import PublicLayout from "../../components/layouts/PublicLayout";
 
+const API_ROOT = settings.api.rest;
+const BASE_URL = settings.api.baseURL;
+
 function SignInPage () {
     const classes = useStyles();
     const [success, setSuccess] = useState<CustomHookMessage>();
@@ -40,6 +43,18 @@ function SignInPage () {
         dispatch(signInAction(values));
         formikHelpers.resetForm();
     };
+
+    const googleLogin = () => {
+        window.open(`${BASE_URL}${API_ROOT}/google`, "_self");
+    }
+
+    const facebookLogin = () => {
+        window.open(`${BASE_URL}${API_ROOT}/facebook`, "_self");
+    }
+    
+    const instagramLogin = () => {
+        window.open(`${BASE_URL}${API_ROOT}/instagram`, "_self");
+    }
 
     useEffect(() => {
         if(authReducer.changePasswordStatus === 'completed'){
@@ -101,6 +116,8 @@ function SignInPage () {
                 }
                 <Box className={classes.appIconWrapper} mt={2}>
                   <IconButton
+                    onClick={facebookLogin}
+                    disabled
                     sx={{
                        border: '0.3px #E0E0E0 solid',
                        width: '2.3rem', height: '2.3rem'
@@ -109,6 +126,7 @@ function SignInPage () {
                     <img src={facebook} alt='facebook-icon' style={{width: '1.2rem'}} />
                   </IconButton>
                   <IconButton
+                    onClick={googleLogin}
                     sx={{
                        border: '0.3px #E0E0E0 solid',
                        width: '2.3rem', height: '2.3rem'
@@ -117,6 +135,8 @@ function SignInPage () {
                     <img src={google} alt='google-icon' style={{width: '1.4rem', height: '1rem'}} />
                   </IconButton>
                   <IconButton
+                    onClick={instagramLogin}
+                    disabled
                     sx={{
                        border: '0.3px #E0E0E0 solid',
                        width: '2.3rem', height: '2.3rem'

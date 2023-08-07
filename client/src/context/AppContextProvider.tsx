@@ -11,8 +11,9 @@ export default function AppContextProvider() {
   const [openSideNav, setOpenSideNav] = useState<boolean>(false);
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
   const [planTab, setPlanTab] = useState<number>(0);
-  const [mobileDate, setMobileDate] = useState<boolean>(false);
+  const [displayNav, setDisplayNav] = useState<boolean>(false);
   const [vendor, setVendor] = useState<IVendor | null>(null);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   return (
     <AbilityContext.Provider value={ability}>
@@ -24,10 +25,12 @@ export default function AppContextProvider() {
           setIsSignedIn,
           planTab,
           setPlanTab,
-          mobileDate,
-          setMobileDate,
           vendor,
-          setVendor
+          setVendor,
+          displayNav,
+          setDisplayNav,
+          darkMode,
+          setDarkMode
         }}>
         <PrivateLayout />
       </AppContext.Provider>

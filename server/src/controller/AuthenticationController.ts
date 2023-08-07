@@ -1,7 +1,7 @@
 import { appCommonTypes } from "../@types/app-common";
 import HttpResponse = appCommonTypes.HttpResponse;
 import BcryptPasswordEncoder = appCommonTypes.BcryptPasswordEncoder;
-import { Request } from "express";
+import { NextFunction, Request, Response } from "express";
 import { TryCatch } from "../decorators";
 import Joi from "joi";
 import { $loginSchema, $saveVendorSchema, IVendorModel } from "../models/Vendor";
@@ -12,6 +12,7 @@ import settings from "../config/settings";
 import Generic from "../utils/Generic";
 import { IUserModel } from "../models/User";
 import { BASIC_PLAN } from "../config/constants";
+// import authService from "../services/AuthService";
 
 export default class AuthenticationController {
     private declare readonly passwordEncoder: BcryptPasswordEncoder;
@@ -220,18 +221,22 @@ export default class AuthenticationController {
       return Promise.resolve(response);
     }
 
-    // public async signOut(req: Request) {
-    //     try {
-    //         await req.user.update({ loginToken:  '' });
+    public async loginFailed(req: Request, res:Response) {
+      console.log(res, 'error')
+      const response: HttpResponse<string> = {
+        code: HttpStatus.OK.code,
+        message: 'Login successful',
+        // result: jwt
+      };
 
-    //         const response: HttpResponse<null> = {
-    //             code: HttpStatus.OK.code,
-    //             message: HttpStatus.OK.value
-    //         };
+      return Promise.resolve(response);
+    };
 
-    //         return Promise.resolve(response)
-    //     } catch (error) {
-    //         return Promise.reject(error)
-    //     }
-    // }
+    public googleOAuthFailed(req: Request, res: Response) {
+      try {
+        res.send('error page')
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    }
 }

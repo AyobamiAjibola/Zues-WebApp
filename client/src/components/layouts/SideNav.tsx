@@ -12,10 +12,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import {
-  createTheme,
-  // CSSObject, styled, Theme,
+  // createTheme,
   ThemeProvider,
-  useTheme,
+  // useTheme,
 } from '@mui/material/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -28,17 +27,19 @@ import useVendor from '../../hooks/useVendor';
 import { ISideNav, sideNavs } from '../../routes';
 import DrawerHeader from './DrawerHeader';
 import { Typography } from '@mui/material';
+import useAppTheme from '../../hooks/useAppTheme';
+import { LightMode, Nightlight } from '@mui/icons-material';
 
 function SideNav() {
   const [navs, setNavs] = useState<ISideNav[]>([]);
 
   useState<any>();
-  const { openSideNav, setOpenSideNav } = useContext(AppContext) as AppContextProps;
-
+  const { openSideNav, setOpenSideNav, darkMode, setDarkMode } = useContext(AppContext) as AppContextProps;
+  
   const vendor = useVendor();
   const navigate = useNavigate();
   const location = useLocation();
-  const theme = useTheme();
+  const { theme } = useAppTheme(darkMode);
   // const logout = useLogout();
 
   useEffect(() => {
@@ -65,54 +66,68 @@ function SideNav() {
     setOpenSideNav(false);
   };
 
+  const handleToggleDarkMode = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    sessionStorage.setItem('dark_mode', String(newDarkMode));
+  };
+
+  useEffect(() =>  {
+    const storedDarkMode = sessionStorage.getItem('dark_mode');
+    if (storedDarkMode === 'true') {
+      setDarkMode(true);
+    } else if (storedDarkMode === 'false') {
+      setDarkMode(false);
+    } else {
+      const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handleChangeDarkMode = (e: any) => {
+        setDarkMode(e.matches);
+      };
+      handleChangeDarkMode(darkModeQuery); // Initial check
+      darkModeQuery.addEventListener('change', handleChangeDarkMode);
+
+      return () => {
+        darkModeQuery.removeEventListener('change', handleChangeDarkMode);
+      };
+    }
+  }, [darkMode]);
+
   return (
-    <ThemeProvider
-      theme={createTheme({
-        palette: {
-          primary: { main: '#eaba7e' },
-          secondary: { main: '#C71B1B' },
-          // mode: 'dark',
-        },
-      })}>
+    <ThemeProvider theme={theme}>
       <Drawer
-        variant="permanent"
+        variant={vendor.isVendor ? "permanent" : "persistent"} //permanent persistent ZUES
         sx={{
           width: DRAWER_WIDTH,
-          marginLeft: openSideNav ? '0px' : '3rem',
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: openSideNav ? DRAWER_WIDTH : '3.5rem',
             boxSizing: 'border-box',
-            backgroundColor: openSideNav ? 'white' : theme.palette.primary.main
+            backgroundColor: theme.palette.primary.main
+            // backgroundColor: !darkMode
+            //                   ? openSideNav ? 'white' : theme.palette.primary.main
+            //                   : theme.palette.darkMode.main
           },
           whiteSpace: 'nowrap',
           boxSizing: 'border-box'
         }}
-        // variant="persistent"
         anchor="left"
         open={openSideNav}
       >
-        <ThemeProvider
-          theme={createTheme({
-            palette: {
-              primary: { main: '#1a97cf' },
-              secondary: { main: '#fba91a' },
-              mode: 'light',
-            },
-          })}>
+        <ThemeProvider theme={theme}>
           <DrawerHeader
             sx={{
               backgroundColor: 'white',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center'
-              }}
-            >
+            }}
+          >
             <Typography
               sx={{
                 fontWeight: 900, textAlign: 'center',
                 fontSize: '1.8rem',
-                color: 'black', width: '70%'
+                color: theme.palette.primary.main,
+                width: '70%'
               }}
             >ZUES</Typography>
 
@@ -159,6 +174,7 @@ function SideNav() {
                     mr: openSideNav ? 2 : 'auto',
                     justifyContent: 'center',
                     color: 'black'
+                    // color: darkMode ? 'white' : theme.palette.darkMode.main
                   }}>
                   <nav.Icon />
                 </ListItemIcon>
@@ -172,37 +188,53 @@ function SideNav() {
                     fontStyle: 'poppins',
                     fontWeight: 600,
                     letterSpacing: 0,
-                    lineHeight: '20px'
+                    lineHeight: '20px',
+                    color: 'black'
                   }}
                 />
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
-        {/* <Divider /> */}
-        {/* <List>
-          {['Logout'].map(text => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                onClick={handleLogout}
+          <Divider />
+          <ListItem disablePadding sx={{ display: 'block' }}>
+            <ListItemButton
+              onClick={handleToggleDarkMode}
+              sx={{
+                minHeight: 48,
+                justifyContent: openSideNav ? 'initial' : 'center',
+                px: 2.5
+              }}
+            >
+              <ListItemIcon
                 sx={{
-                  minHeight: 48,
-                  justifyContent: openSideNav ? 'initial' : 'center',
-                  px: 2.5,
-                }}>
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: openSideNav ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}>
-                  <Logout />
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: openSideNav ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
+                  minWidth: 0,
+                  mr: openSideNav ? 2 : 'auto',
+                  justifyContent: 'center',
+                  color: 'black'
+                  // color: darkMode ? 'white' : theme.palette.darkMode.main
+                }}
+              >
+                { darkMode ? <Nightlight /> : <LightMode/> }
+              </ListItemIcon>
+              <ListItemText
+                sx={{
+                  opacity: openSideNav ? 1 : 0,
+                  fontWeight: 800, fontSize: '12px'
+                }}
+                primaryTypographyProps={{
+                  fontSize: '12px',
+                  fontStyle: 'poppins',
+                  fontWeight: 600,
+                  letterSpacing: 0,
+                  lineHeight: '20px',
+                  color: 'black'
+                }}
+              >
+                { darkMode ? 'Dark mode' : 'Light mode'}
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </List>
       </Drawer>
     </ThemeProvider>
   );

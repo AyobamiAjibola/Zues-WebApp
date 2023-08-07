@@ -15,7 +15,21 @@ import withErrorBoundary from '../../hoc/withErrorBoundary';
 import Main from './Main';
 import HomePage from '../../pages/home/HomePage';
 import settings from '../../config/settings';
-import { Avatar, Button, ClickAwayListener, CssBaseline, Grow, List, ListItem, ListItemButton, MenuItem, MenuList, Paper, Popper } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  ClickAwayListener,
+  CssBaseline,
+  Grow,
+  List,
+  ListItem,
+  ListItemButton,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popper,
+  ThemeProvider
+} from '@mui/material';
 import { topNavs } from '../../routes';
 import AboutPage from '../../pages/about/AboutPage';
 import PackagesPage from '../../pages/package/PackagesPage';
@@ -30,10 +44,12 @@ import FastSellingItemPage from '../../pages/fast-selling-item/FastSellingItemPa
 import NicheSelectionPage from '../../pages/niche-selection/NicheSelectionPage';
 import { makeStyles } from '@mui/styles';
 import useVendor from '../../hooks/useVendor';
-import { ArrowDropDown, Logout } from '@mui/icons-material';
+import { ArrowDropDown, ChevronLeft, Logout } from '@mui/icons-material';
 import { reload } from '../../utils/generic';
 import capitalize from 'capitalize';
 import { SCREEN_WIDTH } from '../../config/constants';
+import useAppTheme from '../../hooks/useAppTheme';
+// import SignInPage from '../../pages/authentication/SignInPage';
 
 const useStyles = makeStyles({
   lowercaseButton: {
@@ -43,8 +59,9 @@ const useStyles = makeStyles({
 
 function PrivateLayout() {
   const classes = useStyles();
-  const { setOpenSideNav, openSideNav } = useContext(AppContext) as AppContextProps;
+  const { setOpenSideNav, openSideNav, darkMode } = useContext(AppContext) as AppContextProps;
   const [open, setOpen] = useState<boolean>(false);
+  const { theme } = useAppTheme(darkMode);
   const screenWidth = document.documentElement.clientWidth;
 
   const anchorRef = useRef<HTMLButtonElement>(null);
@@ -90,26 +107,28 @@ function PrivateLayout() {
   const handleDrawerOpen = () => {
     setOpenSideNav(true);
   };
+  const handleDrawerClose = () => {
+    setOpenSideNav(false);
+  };
 
   const navigate = useNavigate();
   const location = useLocation()
-  const vendor = useVendor();
-  
+  const { vendor, isVendor } = useVendor();
+
   return (
-    <React.Fragment>
+    <ThemeProvider theme={theme}>
       <Box sx={{display: 'flex'}}>
         <CssBaseline />
         <AppBar position="fixed"
           sx={{
-            backgroundColor: 'white',
+            backgroundColor: darkMode ? theme.palette.darkMode.main : 'white',
             boxShadow: 'none'
           }}
           open={openSideNav}
         >
           <Toolbar
             sx={{ 
-              display: 'flex', 
-              // justifyContent: 'space-between',
+              display: 'flex',
               width: '100%'
             }}
           >
@@ -120,28 +139,36 @@ function PrivateLayout() {
                 width: '20%'
               }}
             >
-              <IconButton
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                sx={{
-                  marginRight: 2,
-                  color: 'black',
-                  ...(openSideNav && { display: 'none' }),
-                }}>
+              {!openSideNav &&
                 <MenuIcon
+                  onClick={handleDrawerOpen}
                   sx={{
                     backgroundColor: settings.primary_color,
-                    fontSize: '2rem'
+                    fontSize: '2rem',
+                    marginRight: 2,
+                    color: 'black',
+                    cursor: 'pointer'
                   }}
                 />
-              </IconButton>
+              }
+              {openSideNav &&
+                <ChevronLeft
+                  onClick={handleDrawerClose}
+                  sx={{
+                    backgroundColor: settings.primary_color,
+                    fontSize: '2rem',
+                    marginRight: 2,
+                    color: 'black',
+                    cursor: 'pointer'
+                  }}
+                />
+              }
+
               <Typography
                 sx={{
-                  ...(openSideNav && { display: 'none' }),
-                  color: 'black',
+                  color: theme.palette.primary.main,
                   fontSize: '1.8rem',
-                  fontWeight: 800
+                  fontWeight: 900
                 }}
               >ZUES</Typography>
             </Box>
@@ -157,7 +184,7 @@ function PrivateLayout() {
               {screenWidth > SCREEN_WIDTH && <List
                 sx={{
                   display: 'flex',
-                  width: vendor.isVendor ? '85%' : '80%',
+                  width: isVendor ? '85%' : '80%',
                   justifyContent: 'right',
                   alignItems: 'center', mr: 2
                 }}
@@ -185,8 +212,8 @@ function PrivateLayout() {
                   </ListItem>
                 ))}
               </List>}
-              {screenWidth <= SCREEN_WIDTH && <Box sx={{width: vendor.isVendor ? '60%' : '50%' }}/>}
-              {!vendor.isVendor && <Box
+              {screenWidth <= SCREEN_WIDTH && <Box sx={{width: isVendor ? '60%' : '50%' }}/>}
+              {!isVendor && <Box
                 sx={{
                   display: 'flex',
                   justifyContent:'right',
@@ -237,7 +264,7 @@ function PrivateLayout() {
                 </Link>
               </Box>}
 
-              {vendor.isVendor && <Box
+              {isVendor && <Box
                   sx={{
                     display: 'flex',
                     justifyContent:'right',
@@ -253,8 +280,8 @@ function PrivateLayout() {
                       letterSpacing: 0,
                       lineHeight: '20px'
                     }}
-                  >{vendor.vendor ? capitalize.words(vendor.vendor?.firstName) : ''}</Typography>
-                  {vendor.vendor?.profileImageUrl && <img
+                  >{vendor?.firstName ? capitalize.words(vendor?.firstName) : ''}</Typography>
+                  {vendor?.profileImageUrl && <img
                     alt="vendor_image"
                     width="30rem"
                     height="30rem"
@@ -262,18 +289,18 @@ function PrivateLayout() {
                     style={{
                         borderRadius: '50%'
                     }}
-                    src={`${settings.api.baseURL}/${vendor.vendor?.profileImageUrl}`}
+                    src={`${settings.api.baseURL}/${vendor?.profileImageUrl}`}
                   />}
-                  {!vendor.vendor?.profileImageUrl && <Avatar
+                  {!vendor?.profileImageUrl && <Avatar
                     sx={{
-                        width: "2rem",
-                        height: "2rem",
-                        backgroundColor: settings.primary_color,
-                        fontSize: '14px', fontWeight: 600
+                      width: "2rem",
+                      height: "2rem",
+                      backgroundColor: settings.primary_color,
+                      fontSize: '14px', fontWeight: 600
                     }}
                   >
-                    {vendor.vendor && capitalize.words(vendor.vendor?.firstName.charAt(0))}
-                    {vendor.vendor && capitalize.words(vendor.vendor?.lastName.charAt(0))}
+                    {vendor?.firstName && capitalize.words(vendor?.firstName.charAt(0))}
+                    {vendor?.lastName && capitalize.words(vendor?.lastName.charAt(0))}
                   </Avatar>}
                   <IconButton
                     ref={anchorRef}
@@ -365,12 +392,13 @@ function PrivateLayout() {
             <Route path="/best-selling-item" element={<BestSellingItemPage />} />
             <Route path="/fast-selling-item" element={<FastSellingItemPage />} />
             <Route path="/niche-selection" element={<NicheSelectionPage />} />
+            {/* <Route path="/sign-in" element={<SignInPage />} /> */}
             {/* <Route path="/error" element={<SignInPage />} /> */}
           </Routes>
         </Main>
       </Box>
       {/* <AppLoader show={appointmentReducer.updateAppointmentStatus === 'loading'} /> */}
-    </React.Fragment>
+    </ThemeProvider>
   );
 }
 

@@ -10,12 +10,14 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { clearSignUpStatus } from "../../store/reducers/authenticationReducer";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { SCREEN_WIDTH } from "../../config/constants";
+import { useCookies } from "react-cookie";
 
 function SignUpSuccessPage() {
     const classes = useStyles();
     const parentRef = useRef(null);
     const [parentWidth, setParentWidth] = useState(0);
     const [parentHeight, setParentHeight] = useState(0);
+    const [cookies, _, __] = useCookies(['token']);
   
     const dispatch = useAppDispatch();
     const authReducer = useAppSelector(state => state.authenticationReducer);
@@ -85,7 +87,7 @@ function SignUpSuccessPage() {
                     >
                         create the best quality products
                     </Typography>
-                    <Link to='/sign-in'
+                    <Link to={cookies.token ? '/home' : '/sign-in'}
                         style={{
                             textDecoration: 'none',
                             marginBottom: '4rem',

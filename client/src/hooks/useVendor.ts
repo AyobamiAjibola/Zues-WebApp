@@ -1,7 +1,7 @@
 import { CustomJwtPayload } from '@app-interfaces';
 import { IPermission, IVendor } from '@app-models';
 import jwt_decode from 'jwt-decode';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { LOCAL_STORAGE } from '../config/constants';
 import settings from '../config/settings';
@@ -17,12 +17,11 @@ export default function useVendor() {
   const vendorReducer = useAppSelector(state => state.vendorReducer);
   const dispatch = useAppDispatch();
 
-  const token = useMemo(() => sessionStorage.getItem(settings.auth.admin), []);
+  // const token = useMemo(() => sessionStorage.getItem(settings.auth.admin), []);
+  const token = sessionStorage.getItem(settings.auth.admin);
   const localPermissions = JSON.parse(sessionStorage.getItem(LOCAL_STORAGE.permissions) as string);
 
   useEffect(() => {
-    // const localPermissions = JSON.parse(sessionStorage.getItem(LOCAL_STORAGE.permissions) as string);
-
     if(localPermissions){
     if (null !== localPermissions) {
       const permissions = localPermissions as IPermission[];
@@ -41,6 +40,7 @@ export default function useVendor() {
 
       dispatch(getVendorAction(payload.userId));
     }
+
   }, [dispatch, token]);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function useVendor() {
     if (vendorReducer.getVendorStatus === 'completed') {
       setVendor(vendorReducer.vendor);
     }
-  }, [vendorReducer.getVendorStatus, vendorReducer.vendor]);
+  }, [vendorReducer.getVendorStatus]);
 
   return {
     isVendor,

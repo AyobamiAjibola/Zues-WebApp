@@ -5,7 +5,7 @@ interface IVendor {
   firstName: string;
   lastName: string;
   password: string | null;
-  email: string;
+  email: string | null;
   phone: string;
   gender: string;
   profileImageUrl: string | null;
@@ -33,7 +33,7 @@ const vendorSchema = new Schema<IVendor>({
   firstName: { type: String },
   lastName: { type: String },
   password: { type: String, allowNull: true },
-  email: { type: String },
+  email: { type: String, allowNull: true },
   phone: { type: String },
   gender: { type: String },
   profileImageUrl: { type: String, allowNull: true },

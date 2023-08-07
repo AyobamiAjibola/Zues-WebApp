@@ -76,7 +76,7 @@ function VerificationPage() {
     };
 
     const goBack = () => {
-        navigate('-1')
+        navigate(-1)
     };
 
     const handleInputChange = (index: number, value: string) => {

@@ -63,12 +63,14 @@ declare module '@app-interfaces' {
     setOpenSideNav: React.Dispatch<React.SetStateAction<boolean>>;
     planTab: number;
     setPlanTab: React.Dispatch<React.SetStateAction<number>>;
-    mobileDate: boolean;
-    setMobileDate: React.Dispatch<React.SetStateAction<boolean>>;
+    displayNav: boolean;
+    setDisplayNav: React.Dispatch<React.SetStateAction<boolean>>;
     isSignedIn: boolean;
     setIsSignedIn: React.Dispatch<React.SetStateAction<boolean>>;
     vendor: IVendor | null;
     setVendor: React.Dispatch<React.SetStateAction<IVendor | null>>;
+    darkMode: boolean;
+    setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
   }
 
   interface PubContextProps {

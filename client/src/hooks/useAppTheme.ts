@@ -1,18 +1,21 @@
 import { useMemo } from 'react';
-
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-import { useMediaQuery } from '@mui/material';
+// import { useMediaQuery } from '@mui/material';
 
-export default function useAppTheme() {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+export default function useAppTheme(darkMode: boolean) {
+  // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)'); // changes to dark mode automatically according to the users system mode
+  // const mode = darkMode ? 'dark' : prefersDarkMode ? 'dark' : 'light';
+  const mode = darkMode ? 'dark' : 'light';
 
   const theme = useMemo(
     () =>
       createTheme({
         palette: {
-          primary: { main: '#eaba7e' },
+          primary: { main: '#eaba7e', dark: '#BB9464' },
           secondary: { main: '#fba91a' },
-          mode: prefersDarkMode ? 'dark' : 'light',
+          darkMode: { main: '#000000' },
+          // mode: prefersDarkMode ? 'dark' : 'light',
+          mode: mode
         },
         breakpoints: {
           values: {
@@ -25,7 +28,10 @@ export default function useAppTheme() {
           },
         }
       }),
-    [prefersDarkMode],
+    [
+      // prefersDarkMode,
+      darkMode
+    ],
   );
 
   return {

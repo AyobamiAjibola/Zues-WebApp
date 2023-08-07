@@ -7,7 +7,6 @@ import { IPermission } from '@app-models';
 import { LOCAL_STORAGE } from '../../config/constants';
 import { CustomJwtPayload } from '@app-interfaces';
 import settings from '../../config/settings';
-import { reload } from '../../utils/generic';
 
 interface IAuthenticationState {
   signingInStatus: IThunkAPIStatus;
@@ -93,7 +92,7 @@ const authenticationSlice = createSlice({
 
           sessionStorage.setItem(settings.auth.admin, state.authToken);
 
-          reload();
+          // reload();
         }
       })
       .addCase(signInAction.rejected, (state, action) => {

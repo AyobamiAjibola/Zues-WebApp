@@ -29,6 +29,7 @@ const ForgotPasswordPage = React.lazy(() => import('../pages/authentication/Forg
 const VerificationPage = React.lazy(() => import('../pages/authentication/VerificationPage'));
 const NewPasswordPage = React.lazy(() => import('../pages/authentication/NewPasswordPage'));
 const SignUpSuccessPage = React.lazy(() => import('../pages/authentication/SignUpSuccessPage'));
+const LoginErrorPage = React.lazy(() => import('../pages/authentication/LoginErrorPage'));
 const HomePage = React.lazy(() => import('../context/AppContextProvider'));
 
 export const sideNavs: ISideNav[] = [
@@ -63,6 +64,7 @@ export const routes = [
   { name: 'Verification', path: '/verification', Element: VerificationPage, isPublic: true },
   { name: 'New Password', path: '/change-password', Element: NewPasswordPage, isPublic: true },
   { name: 'Congratulations', path: '/sign-up-success', Element: SignUpSuccessPage, isPublic: true },
+  { name: 'Login Error', path: '/login-failed', Element: LoginErrorPage, isPublic: true },
   {
     name: 'Home',
     path: '*',

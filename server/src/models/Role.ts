@@ -18,10 +18,7 @@ const roleSchema = new Schema<IRole>({
 });
 
 roleSchema.pre('find', function (next) {
-  this.populate({
-    path: 'permissions',
-    select: 'name action'
-  });
+  this.populate('permissions');
   next();
 });
 

@@ -16,6 +16,14 @@ export const DELETE_VENDOR = 'delete_vendor';
 
 export const READ_TRANSACTION = 'read_transaction';
 
+export const LOGIN_FAILED_URL = 'http://localhost:5173/login-failed';
+
+export const HOME_URL = 'http://localhost:5173/home';
+
+export const SIGN_IN_SUCCESS_URL = 'http://localhost:5173/sign-up-success';
+
+export const LOGIN_TOKEN = 'token';
+
 const settings: AppSettings = {
   twilio: {
     twilioSid: <string>process.env.TWILIO_ACCOUNT_SID,

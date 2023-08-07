@@ -15,13 +15,13 @@ export default function useLogin() {
 
   const authReducer = useAppSelector(state => state.authenticationReducer);
   const dispatch = useAppDispatch();
-  const isLoggedIn = sessionStorage.getItem(settings.auth.admin);
 
   useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem(settings.auth.admin);
     if(isLoggedIn) {
       navigate('/home');
     }
-  }, [isLoggedIn, navigate]);
+  }, [ navigate]);
 
   useEffect(() => {
     if (authReducer.signingInStatus === 'completed') {
@@ -33,8 +33,16 @@ export default function useLogin() {
         }, 1000),
       );
     }
-  }, [authReducer.authToken, authReducer.signingInStatus, authReducer.signingInSuccess, dispatch, navigate]);
+  },
+  [
+    authReducer.authToken,
+    authReducer.signingInStatus,
+    authReducer.signingInSuccess,
+    dispatch,
+    navigate
+  ]);
 
+  console.log(authReducer.signingInStatus, 'status')
   useEffect(() => {
     if (authReducer.signingInStatus === 'failed') {
       if (authReducer.signingInError) {

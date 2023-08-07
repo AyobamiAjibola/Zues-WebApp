@@ -1,5 +1,5 @@
 import { FilterQuery, UpdateQuery, QueryOptions } from 'mongoose';
-import Role, {IRoleModel} from '../../models/Role';
+import {IRoleModel} from '../../models/Role';
 import RoleRepository from '../../repositories/RoleRepository';
 
 import { appModelTypes } from '../../@types/app-model';
@@ -31,6 +31,10 @@ export default class RoleDAOService implements ICrudDAO<IRoleModel> {
 
   findByIdPopulatePermissions(id: any, options?: QueryOptions): Promise<IRoleModel | null> {
     return this.roleRepository.findByIdPopulatePermissions(id, options);
+  }
+
+  findByAnyPopulatePermissions(filter: FilterQuery<IRoleModel>, options?: QueryOptions): Promise<IRoleModel | null> {
+    return this.roleRepository.findByAnyPopulatePermissions(filter, options);
   }
 
   findByAny(filter: FilterQuery<IRoleModel>, options?: QueryOptions): Promise<IRoleModel | null> {

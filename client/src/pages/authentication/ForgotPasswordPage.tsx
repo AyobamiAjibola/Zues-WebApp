@@ -49,7 +49,7 @@ function ForgotPasswordPage() {
     };
 
     const goBack = () => {
-        navigate('/')
+        navigate(-1)
     };
 
     const screenWidth = document.documentElement.clientWidth;

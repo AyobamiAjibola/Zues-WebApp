@@ -49,7 +49,7 @@ function NewPasswordPage() {
     };
 
     const goBack = () => {
-        navigate('-1')
+        navigate(-1)
     };
 
     useEffect(() => {
