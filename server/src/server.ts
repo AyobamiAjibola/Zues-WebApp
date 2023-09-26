@@ -8,7 +8,7 @@ import AppLogger from './utils/AppLogger';
 import { Server as SocketServer } from 'socket.io';
 
 const logger = AppLogger.init('server').logger;
-const port = process.env.PORT || 5070;
+const port = process.env.PORT || 6000;
 
 const server = http.createServer(app);
 

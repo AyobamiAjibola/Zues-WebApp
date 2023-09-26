@@ -30,7 +30,7 @@ vendorAddressSchema.pre('findOne', function (next) {
 
 export interface IVendorAddressModel extends Document, IVendorAddress {}
 
-const VendorAddress = mongoose.model<IVendorAddressModel>('VendorAddress', vendorAddressSchema);
+const VendorAddress = mongoose.model<IVendorAddressModel>('VendorAddress', vendorAddressSchema as any);
 
 export const $saveVendorAddress: Joi.SchemaMap = {
     address: Joi.string().required().label('address'),

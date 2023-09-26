@@ -41,7 +41,7 @@ userSchema.pre('find', function (next) {
 
 export interface IUserModel extends Document, IUser {}
 
-const User = mongoose.model<IUserModel>('User', userSchema);
+const User = mongoose.model<IUserModel>('User', userSchema as any);
 
 export const $saveUserSchema: Joi.SchemaMap = {
   firstName: Joi.string().required().label('firstName'),

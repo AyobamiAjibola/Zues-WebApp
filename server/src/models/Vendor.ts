@@ -57,7 +57,7 @@ const vendorSchema = new Schema<IVendor>({
 
 export interface IVendorModel extends Document, IVendor {}
 
-const Vendor = mongoose.model<IVendorModel>('Vendor', vendorSchema);
+const Vendor = mongoose.model<IVendorModel>('Vendor', vendorSchema as any);
 
 export const $changePassword: Joi.SchemaMap = {
   password: Joi.string()

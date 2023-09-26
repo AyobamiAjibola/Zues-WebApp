@@ -18,7 +18,7 @@ const subscriptionSchema = new Schema<ISubscription>({
 
 export interface ISubscriptionModel extends Document, ISubscription {}
 
-const Subscription = mongoose.model<ISubscriptionModel>('Subscription', subscriptionSchema);
+const Subscription = mongoose.model<ISubscriptionModel>('Subscription', subscriptionSchema as any);
 
 export default Subscription;
 

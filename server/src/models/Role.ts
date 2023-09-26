@@ -24,7 +24,7 @@ roleSchema.pre('find', function (next) {
 
 export interface IRoleModel extends Document, IRole {}
 
-const Role = mongoose.model<IRoleModel>('Role', roleSchema);
+const Role = mongoose.model<IRoleModel>('Role', roleSchema as any);
 
 export const $saveRoleSchema: Joi.SchemaMap<IRoleModel> = {
   name: Joi.string().required().label('name'),

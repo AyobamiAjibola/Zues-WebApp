@@ -47,6 +47,6 @@ transactionSchema.pre('findOne', function (next) {
   
 export interface ITransactionModel extends Document, ITransactions {}
   
-const Transaction = mongoose.model<ITransactionModel>('Transaction', transactionSchema);
+const Transaction = mongoose.model<ITransactionModel>('Transaction', transactionSchema as any);
 
 export default Transaction

@@ -5,14 +5,17 @@ import CommandLineRunner from '../helpers/CommandLineRunner';
 import { AGENDA_COLLECTION_NAME } from '../config/constants';
 import CronJob from '../helpers/CronJob';
 import { Agenda } from 'agenda';
+import AppLogger from '../utils/AppLogger';
 // import { QueueManager } from 'rabbitmq-email-manager';
 // import queue from '../config/queue';
+
+const logger = AppLogger.init('mongoDb').logger;
 
 export default async function startup(io: SocketServer) {
   dataStore.init();
   await database.mongodb();
   await CommandLineRunner.run();
-  console.log('MongoDB Connected Successfully');
+  logger.info('MongoDB Connected Successfully');
 
   const agenda = new Agenda({
     db: {

@@ -9,10 +9,10 @@ import globalExceptionHandler from './middleware/globalExceptionHandler';
 import router from './routes';
 import passport from 'passport';
 import session from 'express-session';
-import { default as connectMongoDBSession} from 'connect-mongodb-session';
-import './services/PassportService';
+// import { default as connectMongoDBSession} from 'connect-mongodb-session';
+require('./services/PassportService');
 
-const MongoDBStore = connectMongoDBSession(session);
+// const MongoDBStore = connectMongoDBSession(session);
 
 // const store = new MongoDBStore({
 //   uri: 'mongodb://localhost/zues_dev_db',

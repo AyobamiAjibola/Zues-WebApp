@@ -16,6 +16,6 @@ const permissionSchema = new Schema<IPermission>({
 
 export interface IPermissionModel extends IPermission, Document{}
 
-const Permission = mongoose.model<IPermissionModel>('Permission', permissionSchema);
+const Permission = mongoose.model<IPermissionModel>('Permission', permissionSchema as any);
 
 export default Permission;

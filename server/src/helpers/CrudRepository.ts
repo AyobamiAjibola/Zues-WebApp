@@ -10,6 +10,7 @@ export default class CrudRepository<M extends Document, Id extends Types.ObjectI
   }
 
   async bulkCreate(records: ReadonlyArray<M>): Promise<Array<M>> {
+    //@ts-ignore
     return this.model.insertMany(records);
   }
 
